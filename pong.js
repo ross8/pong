@@ -1,6 +1,7 @@
 var windowHeight = window.innerHeight;
-var height = windowHeight * 0.9;
-var width = height * (5/6);
+var gameContainerWidth = document.getElementById('game-container').clientWidth;
+var height = windowHeight * 0.8;
+var width = gameContainerWidth;
 var paddleWidth = width/8;
 var paddleHeight = paddleWidth/5;
 var playerSpeed = 6;
