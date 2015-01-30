@@ -1,3 +1,5 @@
+//Global Variables
+
 var windowHeight = window.innerHeight;
 var gameContainerWidth = document.getElementById('game-container').clientWidth;
 var height = windowHeight * 0.8;
@@ -12,32 +14,41 @@ var computerStartPositionY = 0;
 var playerStartPositionX = paddleCenter;
 var playerStartPositionY = height - paddleHeight;
 var ballRadius = paddleHeight/2;
+var ballStartPositionX = width/2;
+var ballStartPositionY = height/2;
 var ballStartSpeed= 3;
-var keysDown = {};
 
-var playerScore = 0;
-var computerScore = 0;
-
-window.addEventListener("keydown", function(event) {
-  keysDown[event.keyCode] = true;
-});
-
-window.addEventListener("keyup", function(event) {
-  delete keysDown[event.keyCode];
-});
-
-var animate = window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    function (callback) { 
-        window.setTimeout(callback, 1000 / 60); 
-    };
+//Creating Canvas
 
 var canvas = document.createElement('canvas');
 
 canvas.width = width;
 canvas.height = height;
 var context = canvas.getContext('2d');
+
+//Add canvas to page
+
+window.onload = function () {
+    document.getElementById('game-container').appendChild(canvas);
+    animate(step);
+};
+
+//Storing Key Presses
+
+var keysDown = {};
+
+window.addEventListener("keydown", function(event) {
+    keysDown[event.keyCode] = true;
+});
+
+window.addEventListener("keyup", function(event) {
+    delete keysDown[event.keyCode];
+});
+
+//Keeping Score
+
+var playerScore = 0;
+var computerScore = 0;
 
 var score = function(){
     var playerScoreText = document.createTextNode(playerScore);
@@ -50,91 +61,81 @@ var score = function(){
     computerScoreField.appendChild(computerScoreText);
 }
 
+//Reset position after someone scores
+
 var resetPosition = function() {
     computer.paddle.x = computerStartPositionX;
     player.paddle.x = playerStartPositionX;
-}
-
-var update = function() {
-    player.update();
-    computer.update(ball);
-    ball.update(player.paddle, computer.paddle);
 };
 
-var render = function() {
-    context.fillStyle = "#e3e3e3";
-    context.fillRect(0, 0, width, height);
-    player.render();
-    computer.render();
-    ball.render();
-};
+//Paddle Constructor
 
-var step = function() {
-    update();
-    render();
-    animate(step);
-};
-
-window.onload = function () {
-    document.getElementById('game-container').appendChild(canvas);
-    animate(step);
-};
-
-
-function Paddle(x, y, width, height) {
+function Paddle(x, y) {
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+    this.width = paddleWidth;
+    this.height = paddleHeight;
     this.x_speed = 0;
     this.y_speed = 0;
 };
 
+//Render Method for paddles
+
 Paddle.prototype.render = function() {
-  context.fillStyle = "#0000FF";
-  context.fillRect(this.x, this.y, this.width, this.height);
+    context.fillStyle = "#000";
+    context.fillRect(this.x, this.y, this.width, this.height);
 };
 
-
-function Player() {
-   this.paddle = new Paddle(playerStartPositionX, playerStartPositionY, paddleWidth, paddleHeight);
-};
+//Move method for paddles
 
 Paddle.prototype.move = function(x, y) {
-  this.x += x;
-  this.y += y;
-  this.x_speed = x;
-  this.y_speed = y;
-  if(this.x < 0) { // all the way to the left
-    this.x = 0;
-    this.x_speed = 0;
-  } else if (this.x + this.width > width) { // all the way to the right
-    this.x = width - this.width;
-    this.x_speed = 0;
-  };
+    this.x += x;
+    this.y += y;
+    this.x_speed = x;
+    this.y_speed = y;
+    if(this.x < 0) { // paddle hitting left wall
+        this.x = 0;
+        this.x_speed = 0;
+    } else if (this.x + this.width > width) { // paddle hitting right wall
+        this.x = width - this.width;
+        this.x_speed = 0;
+    };
 };
 
-Player.prototype.update = function() {
-  for(var key in keysDown) {
-    var value = Number(key);
-    if(value == 37) { // left arrow
-      this.paddle.move(-playerSpeed, 0);
-    } else if (value == 39) { // right arrow
-      this.paddle.move(playerSpeed, 0);
-    } else {
-      this.paddle.move(0, 0);
-    };
-  };
+//Player constructor
+
+function Player() {
+    this.paddle = new Paddle(playerStartPositionX, playerStartPositionY);
 };
+
+//Update method for players
+
+Player.prototype.update = function() {
+    for(var key in keysDown) {
+        var value = Number(key);
+        if(value == 37) { // left arrow pressed
+            this.paddle.move(-playerSpeed, 0);
+        } else if (value == 39) { // right arrow pressed
+            this.paddle.move(playerSpeed, 0);
+        } else {
+            this.paddle.move(0, 0);
+        };
+    };
+};
+
+//Render method for players
 
 Player.prototype.render = function() {
   this.paddle.render();
 };
 
+//computer constructor
+
 function Computer() {
-  this.paddle = new Paddle(computerStartPositionX, computerStartPositionY, paddleWidth, paddleHeight);
+  this.paddle = new Paddle(computerStartPositionX, computerStartPositionY);
 };
 
+//update method for computers
 
 Computer.prototype.update = function(ball) {
     var x_pos = ball.x;
@@ -157,9 +158,13 @@ Computer.prototype.update = function(ball) {
     }
 };
 
+//Render method for computers
+
 Computer.prototype.render = function() {
-  this.paddle.render();
+    this.paddle.render();
 };
+
+//Ball constructor
 
 function Ball(x, y) {
     this.x = x;
@@ -168,6 +173,8 @@ function Ball(x, y) {
     this.y_speed = ballStartSpeed;
     this.radius = ballRadius;
 };
+
+//Update method for balls
 
 Ball.prototype.update = function(paddle1, paddle2) {
     this.x += this.x_speed;
@@ -222,18 +229,55 @@ Ball.prototype.update = function(paddle1, paddle2) {
     };
 };
 
+//Render method for balls
+
 Ball.prototype.render = function() {
-  context.beginPath();
-  context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
-  context.fillStyle = "#000000";
-  context.fill();
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius, 2 * Math.PI, false);
+    context.fillStyle = "#000000";
+    context.fill();
 };
 
+//Update all objects for render
+
+var update = function() {
+    player.update();
+    computer.update(ball);
+    ball.update(player.paddle, computer.paddle);
+};
+
+//Render objects to canvas
+
+var render = function() {
+    context.fillStyle = "#e3e3e3";
+    context.fillRect(0, 0, width, height);
+    player.render();
+    computer.render();
+    ball.render();
+};
+
+//Call step 60 times per second
+
+var animate = window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    function (callback) { 
+        window.setTimeout(callback, 1000 / 60); 
+    };
+;
+
+//Loop through update, render, animate
+
+var step = function() {
+    update();
+    render();
+    animate(step);
+};
+
+//Create the instances of each object and play the game
 
 var player = new Player();
 var computer = new Computer();
-var ballStartPositionX = width/2;
-var ballStartPositionY = height/2;
 var ball = new Ball(ballStartPositionX,ballStartPositionY);
 
 
