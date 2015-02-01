@@ -45,22 +45,6 @@ window.addEventListener("keyup", function(event) {
     delete keysDown[event.keyCode];
 });
 
-//Keeping Score
-
-var playerScore = 0;
-var computerScore = 0;
-
-var score = function(){
-    var playerScoreText = document.createTextNode(playerScore);
-    var computerScoreText = document.createTextNode(computerScore);
-    var playerScoreField = document.getElementById('player-score');
-    var computerScoreField = document.getElementById('computer-score');
-    playerScoreField.innerHTML = '';
-    computerScoreField.innerHTML = '';
-    playerScoreField.appendChild(playerScoreText);
-    computerScoreField.appendChild(computerScoreText);
-}
-
 //Reset position after someone scores
 
 var resetPosition = function() {
@@ -106,6 +90,15 @@ Paddle.prototype.move = function(x, y) {
 
 function Player() {
     this.paddle = new Paddle(playerStartPositionX, playerStartPositionY);
+    this.score = 0;
+};
+
+Player.prototype.iScored = function() {
+    this.score ++;
+    var playerScoreText = document.createTextNode(this.score);
+    var playerScoreField = document.getElementById('player-score');
+    playerScoreField.innerHTML = '';
+    playerScoreField.appendChild(playerScoreText);  
 };
 
 //Update method for players
@@ -132,7 +125,16 @@ Player.prototype.render = function() {
 //computer constructor
 
 function Computer() {
-  this.paddle = new Paddle(computerStartPositionX, computerStartPositionY);
+    this.paddle = new Paddle(computerStartPositionX, computerStartPositionY);
+    this.score = 0;
+};
+
+Computer.prototype.iScored = function() {
+    this.score ++;
+    var computerScoreText = document.createTextNode(this.score);
+    var computerScoreField = document.getElementById('computer-score');
+    computerScoreField.innerHTML = '';
+    computerScoreField.appendChild(computerScoreText);
 };
 
 //update method for computers
@@ -194,14 +196,12 @@ Ball.prototype.update = function(paddle1, paddle2) {
     
     if(this.y < 0 || this.y > height) { // a point was scored
         if(this.y < 0) { // player scored
-            playerScore ++;
+            player.iScored();
         };
 
         if(this.y > height ) { // computer scored
-            computerScore ++;
+            computer.iScored();
         };
-        
-        score();
         
         resetPosition();
         
