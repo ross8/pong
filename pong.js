@@ -89,9 +89,12 @@ Paddle.prototype.move = function(x, y) {
 //Player constructor
 
 function Player() {
+    
     this.paddle = new Paddle(playerStartPositionX, playerStartPositionY);
     this.score = 0;
 };
+
+//update score for player
 
 Player.prototype.iScored = function() {
     this.score ++;
@@ -128,6 +131,8 @@ function Computer() {
     this.paddle = new Paddle(computerStartPositionX, computerStartPositionY);
     this.score = 0;
 };
+
+//update score for computer
 
 Computer.prototype.iScored = function() {
     this.score ++;
