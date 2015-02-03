@@ -16,7 +16,10 @@ var playerStartPositionY = height - paddleHeight;
 var ballRadius = paddleHeight/2;
 var ballStartPositionX = width/2;
 var ballStartPositionY = height/2;
-var ballStartSpeed= 3;
+var ballStartSpeed= 10;
+var winningScore = 7;
+var playerScoreField = document.getElementById('player-score');
+var computerScoreField = document.getElementById('computer-score');
 
 //Creating Canvas
 
@@ -44,6 +47,26 @@ window.addEventListener("keydown", function(event) {
 window.addEventListener("keyup", function(event) {
     delete keysDown[event.keyCode];
 });
+
+//Keeping Score
+
+var resetScores = function(){
+    computer.score = 0;
+    player.score = 0;
+    computerScoreField.innerHTML = '0';
+    playerScoreField.innerHTML = '0';
+};
+
+var score = function(){
+    if(computer.score >= winningScore || player.score >= winningScore){
+        if(computer.score >= winningScore){
+            alert("Computer Won!");
+        }else if(player.score >= winningScore){
+            alert("You Won!");
+        };
+        resetScores();
+    };
+};
 
 //Reset position after someone scores
 
@@ -103,7 +126,7 @@ function Player() {
 Player.prototype.iScored = function() {
     this.score ++;
     var playerScoreText = document.createTextNode(this.score);
-    var playerScoreField = document.getElementById('player-score');
+    
     playerScoreField.innerHTML = '';
     playerScoreField.appendChild(playerScoreText);  
 };
@@ -141,7 +164,7 @@ function Computer() {
 Computer.prototype.iScored = function() {
     this.score ++;
     var computerScoreText = document.createTextNode(this.score);
-    var computerScoreField = document.getElementById('computer-score');
+    
     computerScoreField.innerHTML = '';
     computerScoreField.appendChild(computerScoreText);
 };
@@ -272,6 +295,7 @@ var animate = window.requestAnimationFrame ||
 //Loop through update, render, animate
 
 var step = function() {
+    score();
     update();
     render();
     animate(step);
