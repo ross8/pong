@@ -1,7 +1,7 @@
 //Global Variables
 
 var windowHeight = window.innerHeight;
-var gameContainerWidth = document.getElementById('game-container').clientWidth;
+var gameContainerWidth = document.getElementById('game-col').clientWidth;
 var height = windowHeight * 0.8;
 var width = gameContainerWidth;
 var paddleWidth = width/8;
@@ -29,7 +29,7 @@ var context = canvas.getContext('2d');
 //Add canvas to page
 
 window.onload = function () {
-    document.getElementById('game-container').appendChild(canvas);
+    document.getElementById('game-col').appendChild(canvas);
     animate(step);
 };
 
@@ -48,6 +48,10 @@ window.addEventListener("keyup", function(event) {
 //Reset position after someone scores
 
 var resetPosition = function() {
+    ball.x = ballStartPositionX;
+    ball.y = ballStartPositionY;
+    ball.x_speed = 0;
+    ball.y_speed = ballStartSpeed;
     computer.paddle.x = computerStartPositionX;
     player.paddle.x = playerStartPositionX;
 };
@@ -209,15 +213,9 @@ Ball.prototype.update = function(paddle1, paddle2) {
         };
         
         resetPosition();
-        
-        this.x_speed = 0;
-        this.y_speed = ballStartSpeed;
-        this.x = ballStartPositionX;
-        this.y = ballStartPositionY;
-        
     };
     
-    if(top_y > 300) {
+    if(top_y > height/2) {
         if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
             // hit the player's paddle
             this.y_speed = -this.y_speed;
@@ -284,5 +282,8 @@ var step = function() {
 var player = new Player();
 var computer = new Computer();
 var ball = new Ball(ballStartPositionX,ballStartPositionY);
+
+
+
 
 
