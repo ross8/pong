@@ -49,6 +49,30 @@ window.addEventListener("keyup", function(event) {
     delete keysDown[event.keyCode];
 });
 
+//Storing control button presses
+
+var leftButton = document.getElementById('left-button'); 
+var rightButton = document.getElementById('right-button');
+var leftButtonPressed = false; 
+var rightButtonPressed = false;
+var leftMouseDown = function(){ //function to update leftButtonPressed
+    leftButtonPressed = true;
+};
+var leftMouseUp = function(){ //funciton to update leftButtonPressed
+    leftButtonPressed = false;
+};
+var rightMouseDown = function(){ //function to update leftButtonPressed
+    rightButtonPressed = true;
+};
+var rightMouseUp = function(){ //funciton to update leftButtonPressed
+    rightButtonPressed = false;
+};
+//Event listeners to see if left button is pressed
+leftButton.addEventListener('mousedown',leftMouseDown,false);
+leftButton.addEventListener('mouseup',leftMouseUp, false);
+rightButton.addEventListener('mousedown',rightMouseDown,false);
+rightButton.addEventListener('mouseup',rightMouseUp, false);
+
 //Keeping Score
 
 var resetScores = function(){
@@ -146,23 +170,13 @@ Player.prototype.update = function() {
         };
     };
     
-    //Storing control button presses
-
-    var leftButton = document.getElementById('left-button'); //Get left button
-    var leftButtonPressed = false; //variable to store whether or not the left button is pressed
-    
-    var leftMouseDown = function(){ //function to update leftButtonPressed
-        leftButtonPressed = true;
+    if(leftButtonPressed){
+        this.paddle.move(-playerSpeed, 0);
+    }else if(rightButtonPressed){
+        this.paddle.move(playerSpeed, 0);
+    }else{
+        
     };
-    
-    var leftMouseUp = function(){ //funciton to update leftButtonPressed
-        leftButtonPressed = false;
-    };
-    
-    //Event listeners to see if left button is pressed
-    
-    leftButton.addEventListener('mousedown',leftMouseDown,false);
-    leftButton.addEventListener('mouseup',leftMouseUp, false);
     
     //Printing left button press to screen
     
