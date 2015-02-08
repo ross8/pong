@@ -10,13 +10,21 @@
         <div id="row">
             <div class = "col-sm-3"></div>
             <div class = "col-xs-12 col-sm-6" id="game-col" style = "padding: 0px;">
+                <div id="controls" class = "visible-xs-block">  
+                    <div class="col-xs-6">
+                        <button id="left-button" class="btn btn-default btn-block">LEFT</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button id="right-button" class="btn btn-default btn-block">RIGHT</button>
+                    </div>
+                </div> 
             </div>
             <div class = "col-sm-3">
+                <div id="button-pressed"></div>
                 <b>
                     <p>Computer: <span id="computer-score">0</span></p>
                     <p >You: <span id="player-score">0</span></p>
                 </b>
-                <hr>
                 <p>Games are to <b>7</b></p>
                 <p>Use <b>left and right arrows</b> to move</p>
             </div>

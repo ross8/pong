@@ -32,7 +32,8 @@ var context = canvas.getContext('2d');
 //Add canvas to page
 
 window.onload = function () {
-    document.getElementById('game-col').appendChild(canvas);
+    var gameCol = document.getElementById('game-col');
+    gameCol.insertBefore(canvas, gameCol.firstChild);
     animate(step);
 };
 
@@ -144,6 +145,32 @@ Player.prototype.update = function() {
             this.paddle.move(0, 0);
         };
     };
+    
+    //Storing control button presses
+
+    var leftButton = document.getElementById('left-button'); //Get left button
+    var leftButtonPressed = false; //variable to store whether or not the left button is pressed
+    
+    var leftMouseDown = function(){ //function to update leftButtonPressed
+        leftButtonPressed = true;
+    };
+    
+    var leftMouseUp = function(){ //funciton to update leftButtonPressed
+        leftButtonPressed = false;
+    };
+    
+    //Event listeners to see if left button is pressed
+    
+    leftButton.addEventListener('mousedown',leftMouseDown,false);
+    leftButton.addEventListener('mouseup',leftMouseUp, false);
+    
+    //Printing left button press to screen
+    
+    var buttonPressedText = document.createTextNode(leftButtonPressed);
+    var buttonPressedTextElement = document.getElementById('button-pressed');
+    buttonPressedTextElement.innerHTML = '';
+    buttonPressedTextElement.appendChild(buttonPressedText);
+    
 };
 
 //Render method for players
