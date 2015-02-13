@@ -322,7 +322,7 @@ var update = function() {
 //Render objects to canvas
 
 var render = function() {
-    context.fillStyle = "#e3e3e3";
+    context.fillStyle = "#fff";
     context.fillRect(0, 0, width, height);
     player.render();
     computer.render();
