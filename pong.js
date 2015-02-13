@@ -70,8 +70,12 @@ var rightMouseUp = function(){ //funciton to update leftButtonPressed
 //Event listeners to see if left button is pressed
 leftButton.addEventListener('mousedown',leftMouseDown,false);
 leftButton.addEventListener('mouseup',leftMouseUp, false);
+leftButton.addEventListener('touchstart',leftMouseDown,false);
+leftButton.addEventListener('touchend',leftMouseUp, false);
 rightButton.addEventListener('mousedown',rightMouseDown,false);
 rightButton.addEventListener('mouseup',rightMouseUp, false);
+rightButton.addEventListener('touchstart',rightMouseDown,false);
+rightButton.addEventListener('touchend',rightMouseUp, false);
 
 //Keeping Score
 
@@ -177,14 +181,6 @@ Player.prototype.update = function() {
     }else{
         
     };
-    
-    //Printing left button press to screen
-    
-    var buttonPressedText = document.createTextNode(leftButtonPressed);
-    var buttonPressedTextElement = document.getElementById('button-pressed');
-    buttonPressedTextElement.innerHTML = '';
-    buttonPressedTextElement.appendChild(buttonPressedText);
-    
 };
 
 //Render method for players
