@@ -7,7 +7,6 @@ var width = gameContainerWidth;
 var paddleWidth = width/8;
 var paddleHeight = paddleWidth/5;
 var playerSpeed = 6;
-var computerMaxSpeed = playerSpeed + 1;
 var paddleCenter = width/2 - paddleWidth/2;
 var computerStartPositionX = paddleCenter;
 var computerStartPositionY = 0;
@@ -16,7 +15,18 @@ var playerStartPositionY = height - paddleHeight;
 var ballRadius = paddleHeight/2;
 var ballStartPositionX = width/2;
 var ballStartPositionY = height/2;
-var ballStartSpeed= 5;
+var ballStartSpeed= 0;
+var dpi = window.devicePixelRatio;
+if(dpi <= 1){
+    ballStartSpeed = 7;
+}else if(dpi > 1 && dpi < 2){
+    ballStartSpeed = 10;
+    playerSpeed = 8;
+}else{
+    ballStartSpeed = 15;
+    playerSpeed = 10;
+};
+var computerMaxSpeed = playerSpeed + 1;
 var winningScore = 7;
 var playerScoreField = document.getElementById('player-score');
 var computerScoreField = document.getElementById('computer-score');
