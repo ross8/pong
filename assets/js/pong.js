@@ -4,15 +4,22 @@ var windowHeight = window.innerHeight;
 var gameContainerWidth = document.getElementById('game-col').clientWidth;
 var height = windowHeight * 0.8;
 var width = gameContainerWidth;
+var scoreboard = document.getElementById('scoreboard');
+var scoreboardHeight = scoreboard.clientHeight;
+var buttonHeight = windowHeight - scoreboardHeight - height;
+var leftButton = document.getElementById('left-button'); 
+var rightButton = document.getElementById('right-button');
+leftButton.setAttribute('style', 'height:' + buttonHeight +'px');
+rightButton.setAttribute('style','height:' + buttonHeight +'px');
 var paddleWidth = width/8;
-var paddleHeight = paddleWidth/5;
+var paddleHeight = paddleWidth/7;
 var playerSpeed = 6;
 var paddleCenter = width/2 - paddleWidth/2;
 var computerStartPositionX = paddleCenter;
 var computerStartPositionY = 0;
 var playerStartPositionX = paddleCenter;
 var playerStartPositionY = height - paddleHeight;
-var ballRadius = paddleHeight/2;
+var ballRadius = paddleHeight/1.5;
 var ballStartPositionX = width/2;
 var ballStartPositionY = height/2;
 var ballStartSpeed= 0;
@@ -20,16 +27,22 @@ var dpi = window.devicePixelRatio;
 if(dpi <= 1){
     ballStartSpeed = 7;
 }else if(dpi > 1 && dpi < 2){
-    ballStartSpeed = 10;
+    ballStartSpeed = 8;
     playerSpeed = 8;
 }else{
-    ballStartSpeed = 15;
-    playerSpeed = 10;
+    ballStartSpeed = 9;
+    playerSpeed = 9;
 };
 var computerMaxSpeed = playerSpeed + 1;
 var winningScore = 7;
 var playerScoreField = document.getElementById('player-score');
 var computerScoreField = document.getElementById('computer-score');
+
+//Print dpi to screen
+
+var dpiText = document.createTextNode(dpi);
+var dpiElement = document.getElementById('dpi');
+dpiElement.appendChild(dpiText);
 
 //Creating Canvas
 
@@ -61,8 +74,6 @@ window.addEventListener("keyup", function(event) {
 
 //Storing control button presses
 
-var leftButton = document.getElementById('left-button'); 
-var rightButton = document.getElementById('right-button');
 var leftButtonPressed = false; 
 var rightButtonPressed = false;
 var leftMouseDown = function(){ //function to update leftButtonPressed

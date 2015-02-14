@@ -2,10 +2,12 @@ html{-webkit-user-select: none;}
 
 body{overflow: hidden;}
 
-#game-col,
-.control-button,
-.scores{
+canvas{
     border: 1px solid #e3e3e3;
+}
+
+#dpi{
+    display: none;
 }
 
 .scores{
@@ -17,8 +19,11 @@ body{overflow: hidden;}
 }
 
 .control-button{
-    height: 150px;
     text-align: center;
     font-size: 50px;
     cursor: pointer;
+}
+
+#left-button{
+    border-right: 1px solid #e3e3e3;
 }
